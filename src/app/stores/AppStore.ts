@@ -25,13 +25,6 @@ const App = types.model({
     const setLocale = (locale) => {
         self.locale = locale;
         i18n.changeLanguage(LOCALES[locale].i18n);
-
-        //for <fbt /> later when its production
-        const html = document.getElementsByTagName('html')[0];
-        if (html != null) {
-            html.lang = LOCALES[locale].bcp47;
-        }
-        document.body.className = LOCALES[locale].rtl ? 'rtl' : 'ltr';
     }
 
     return {

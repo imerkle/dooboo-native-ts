@@ -1,18 +1,5 @@
 import i18n from "i18next";
-
-const resources = {
-    en: {
-        translation: {
-            "Changelog": "Me English"
-        }
-    },
-    es: {
-        translation: {
-            "Changelog": "Hola Espanos"
-        }        
-    }
-};
-
+import {resources} from "app/constants";
 
 i18n
     //.use(LanguageDetector)

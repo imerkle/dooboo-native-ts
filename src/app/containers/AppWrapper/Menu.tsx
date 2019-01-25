@@ -4,7 +4,9 @@ import {
     ScrollView,
     View,
 } from 'react-native';
-import { Button, Text, List, FAB } from 'react-native-paper';
+import { Button, Text, List, FAB, IconButton } from 'react-native-paper';
+import { withNavigation } from "react-navigation";
+import { withNamespaces } from 'react-i18next';
 
 const color_86 = '#868686';
 const fontSize_11 = 11;
@@ -12,11 +14,20 @@ const fontSize_16 = 16;
 const paddingRight_3 = 3;
 
 const styles = StyleSheet.create({
-    menu: {
-        flexDirection: 'row',
+    root: {
+        flexDirection: 'column',
         flex: 1,
     },
-    leftBar: {
+    row1: {
+        flex: 0.93,
+        flexDirection: 'row',
+        backgroundColor: '#202020',
+    },     
+    row2: {
+        flex: 0.07,
+        backgroundColor: '#202020',
+    },    
+    col11: {
         flex: 0.25,
         backgroundColor: '#1a1818',
         paddingTop: 5,
@@ -24,16 +35,9 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         paddingLeft: 0,
     },
-    midBar: {
+    col12: {
         flex: 0.75,
         backgroundColor: '#292726',
-    },
-    topBar: {
-        flex: 0.9,
-    },
-    bottomBar: {
-        flex: 0.1,
-        backgroundColor: '#202020',
     },
     fabdiv: {
         flexDirection: 'row',
@@ -66,100 +70,44 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: '#424448',
     },
-    baseheader: {
-        backgroundColor: '#202020',
-        fontSize: 18,
-        padding: 10,
-        color: '#fbfbfb',
-    },
     assets_menu_container: {
     },
-    li: {
-        padding: 20,
-        flexDirection: 'row',
-        alignItems: "center",
-    },
-    li_selected: {
-        backgroundColor: '#383838',
-    },
-    rel: {
-        fontSize: fontSize_16,
-        paddingRight: paddingRight_3,
-    },
-    price: {
-        fontSize: fontSize_16,
-        paddingRight: paddingRight_3,
-    },
-    vol: {
-        color: color_86,
-        fontSize: fontSize_11,
-        paddingRight: paddingRight_3,
-        fontWeight: 'bold',
-    },
-    priceusd: {
-        color: color_86,
-        fontSize: fontSize_11,
-    },
-    base: {
-        color: color_86,
-    },
-    arrow: {
-        fontSize: 10,
-        paddingRight: paddingRight_3,
-    },
-    sorter: {
-        //box-shadow: 5px 3px 7px ;
-        paddingVertical: 2,
-        paddingHorizontal: 8,
-        fontSize: 10,
-        backgroundColor: '#201e1e',
-        margin: 4,
-        borderRadius: 4,
-        shadowOffset: { width: 5, height: 3 },
-        elevation: 7,
-        shadowColor: '#1b1a1a',
-        shadowOpacity: 1.0,
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: "transparent",
-        opacity: .5,
-        flex: 0.5,
-        color: "#FFF",
-    },
-    sorter_selected: {
-        borderColor: '#4D4D4D',
-        opacity: 1,
-    }
 });
 
+@withNavigation
 class Menu extends React.Component<any, any>{
     render(){
+        const { t } = this.props;
         return (
-            <View style={styles.menu}>
-                <View style={styles.leftBar}>
-                    <View style={styles.fabdiv}>
-                        <View style={[styles.nib, true && styles.nib_selected]}></View>
-                        <FAB style={[styles.fab, true && styles.fab_selected]} icon="home" onPress={() => { }} />
+            <View style={styles.root}>
+                <View style={styles.row1}>
+                    <View style={styles.col11}>
+                        <View style={styles.fabdiv}>
+                            <View style={[styles.nib, true && styles.nib_selected]}></View>
+                            <FAB style={[styles.fab, true && styles.fab_selected]} icon="home" onPress={() => { this.props.navigation.navigate('Home') }} />
+                        </View>
                     </View>
-                </View>
-                <View style={styles.midBar}>
-                    <View style={styles.topBar}>
+                    <View style={styles.col12}>
                         {true &&
-                            <List.Section>
+                            <List.Section>          
                                 <List.Item
-                                    title="Home"
-                                    description="Generate, Restore or Export Wallet"
+                                    title={t("Home")}
+                                    left={props => <List.Icon {...props} icon="home" />}
                                 />
                             </List.Section>
                         }
                         <ScrollView style={styles.assets_menu_container}>
                         </ScrollView>
                     </View>
-                    <View style={styles.bottomBar}>
-                    </View>
+                </View>
+                <View style={styles.row2}>
+                    <IconButton
+                        icon="settings"
+                        onPress={() => { this.props.navigation.navigate('Settings') }}
+                    />
                 </View>
             </View>            
         );
     }
 }
-export default Menu;
+export default withNamespaces("app")(Menu);
