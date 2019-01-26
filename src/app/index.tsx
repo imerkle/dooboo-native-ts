@@ -14,61 +14,63 @@ import AppWrapper from "app/containers/AppWrapper";
 import Settings from "app/containers/Settings";
 import Preferences from "app/containers/Settings/Preferences";
 
-const StackNavigator = createStackNavigator({
-  Settings: { 
-    screen: Settings,
-  },
-  Preferences: {
-    screen: Preferences,
-  },  
-}, {
-  initialRouteName: 'Settings',
-  headerBackTitleVisible: true,
-  cardStyle: { backgroundColor: '#303030' },
-  headerMode: "none",
-  transitionConfig: () => ({
-      screenInterpolator: sceneProps => {
-        const { layout, position, scene } = sceneProps;
-        const { index } = scene;
+const tc = {
+  screenInterpolator: sceneProps => {
+    const { layout, position, scene } = sceneProps;
+    const { index } = scene;
 
-        const translateX = position.interpolate({
-          inputRange: [index - 1, index, index + 1],
-          outputRange: [layout.initWidth, 0, 0]
-        });
+    const translateX = position.interpolate({
+      inputRange: [index - 1, index, index + 1],
+      outputRange: [layout.initWidth, 0, 0]
+    });
 
-        const opacity = position.interpolate({
-          inputRange: [
-            index - 1,
-            index - 0.99,
-            index,
-            index + 0.99,
-            index + 1
-          ],
-          outputRange: [0, 1, 1, 0.3, 0]
-        });
+    const opacity = position.interpolate({
+      inputRange: [
+        index - 1,
+        index - 0.99,
+        index,
+        index + 0.99,
+        index + 1
+      ],
+      outputRange: [0, 1, 1, 0.3, 0]
+    });
 
-        return { opacity, transform: [{ translateX }] };
-      }
-  }),  
-});
+    return { opacity, transform: [{ translateX }] };
+  }
+};
+const getAppContainer = ({theme}) => {
+  const StackNavigator = createStackNavigator({
+    Settings: {
+      screen: Settings,
+    },
+    Preferences: {
+      screen: Preferences,
+    },
+  }, {
+      initialRouteName: 'Settings',
+      headerBackTitleVisible: true,
+      cardStyle: { backgroundColor: theme.app.bg },
+      headerMode: "none",
+      transitionConfig: () => (tc),
+    });
 
-const DrawerNavigator = createDrawerNavigator({
-  Home: {
-    screen: Home,
-  },
-  Settings: {
-    screen: StackNavigator,
-  }  
-}, {
-    drawerWidth: 300,
-    contentComponent: AppWrapper,
-    initialRouteName: 'Home',
-});
+  const DrawerNavigator = createDrawerNavigator({
+    Home: {
+      screen: Home,
+    },
+    Settings: {
+      screen: StackNavigator,
+    }
+  }, {
+      drawerWidth: 300,
+      contentComponent: AppWrapper,
+      initialRouteName: 'Home',
+    });
 
-const AppContainer = createAppContainer(DrawerNavigator);
+  return createAppContainer(DrawerNavigator);
+}
 
 const rootStore = createStores();
-
 @observer
 class AppFragment extends React.Component<any, any>{
   constructor(props) {
@@ -76,13 +78,17 @@ class AppFragment extends React.Component<any, any>{
   }
   render() {
     const { appStore } = rootStore;
+    const theme = appStore.theme == 1 ? themeDark : themeLight;
+
+    const AppContainer = getAppContainer({theme});
+
     return (
       <StoreProvider rootStore={rootStore}>
         <PaperProvider theme={theme}>
           <I18nextProvider i18n={i18n}>
-            <View style={styles.container}>
+            <View style={[styles.container, {backgroundColor: theme.app.bg}]}>
               <AppContainer />
-              <Snackbar style={{ zIndex: 10, backgroundColor: "#000" }} onDismiss={() => { appStore.snackOpen(false) }} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>
+              <Snackbar style={{ zIndex: 10, backgroundColor: theme.app.snackbar }} onDismiss={() => { appStore.snackOpen(false) }} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>
             </View>
           </I18nextProvider>
         </PaperProvider>
@@ -90,7 +96,7 @@ class AppFragment extends React.Component<any, any>{
     )
   }
 }
-const theme = {
+const themeDark = {
   ...DefaultTheme,
   dark: true,
   roundness: 2,
@@ -98,6 +104,40 @@ const theme = {
     ...DefaultTheme.colors,
     primary: '#3c50a3',
     text: '#FFF',
+  },
+  app: {
+    bg: "#303030",
+    _202020: "#202020",
+    _292726: "#292726",
+    _1a1818: "#1a1818",
+    nib: "#fbfbfb",
+    fab: "#3c50a3",
+    fab_selected: "#424448",
+    h5: "#bec0c4",
+    caption: "#71757c",
+    snackbar: "#000000",
+  }
+};
+const themeLight = {
+  ...DefaultTheme,
+  dark: false,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#3c50a3',
+    text: '#3f3f3f',
+  },
+  app: {
+    bg: "#FFF",
+    _202020: "#e0e0e0",
+    _292726: "#ededed",
+    _1a1818: "#f9f9f9",
+    nib: "#fbfbfb",
+    fab: "#3c50a3",
+    fab_selected: "#424448",
+    h5: "#bec0c4",
+    caption: "#6c6c6c",
+    snackbar: "#ededed",
   }
 };
 
@@ -105,7 +145,6 @@ const styles: any = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#303030',
     margin: 0,
   },
 });

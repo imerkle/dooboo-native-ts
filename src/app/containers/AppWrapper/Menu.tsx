@@ -4,14 +4,10 @@ import {
     ScrollView,
     View,
 } from 'react-native';
-import { Button, Text, List, FAB, IconButton } from 'react-native-paper';
+import { withTheme, List, FAB, IconButton } from 'react-native-paper';
 import { withNavigation } from "react-navigation";
 import { withNamespaces } from 'react-i18next';
 
-const color_86 = '#868686';
-const fontSize_11 = 11;
-const fontSize_16 = 16;
-const paddingRight_3 = 3;
 
 const styles = StyleSheet.create({
     root: {
@@ -21,15 +17,12 @@ const styles = StyleSheet.create({
     row1: {
         flex: 0.93,
         flexDirection: 'row',
-        backgroundColor: '#202020',
-    },     
+    },
     row2: {
         flex: 0.07,
-        backgroundColor: '#202020',
-    },    
+    },
     col11: {
         flex: 0.25,
-        backgroundColor: '#1a1818',
         paddingTop: 5,
         paddingRight: 10,
         paddingBottom: 5,
@@ -37,7 +30,6 @@ const styles = StyleSheet.create({
     },
     col12: {
         flex: 0.75,
-        backgroundColor: '#292726',
     },
     fabdiv: {
         flexDirection: 'row',
@@ -51,15 +43,11 @@ const styles = StyleSheet.create({
     nib: {
         margin: 5,
         padding: 3,
-        backgroundColor: '#fbfbfb',
         borderTopStartRadius: 0,
         borderTopEndRadius: 12,
         borderBottomEndRadius: 12,
         borderBottomStartRadius: 0,
         opacity: 0,
-    },
-    fab: {
-        backgroundColor: '#3c50a3',
     },
     fabImg: {
         height: 56,
@@ -68,26 +56,26 @@ const styles = StyleSheet.create({
     },
     fab_selected: {
         borderRadius: 12,
-        backgroundColor: '#424448',
     },
     assets_menu_container: {
     },
-});
-
+});        
 @withNavigation
 class Menu extends React.Component<any, any>{
     render(){
-        const { t } = this.props;
+        const { t, theme } = this.props;
+        const index = 0;
+        
         return (
             <View style={styles.root}>
-                <View style={styles.row1}>
-                    <View style={styles.col11}>
+                <View style={[styles.row1, { backgroundColor: theme.app._202020}]}>
+                    <View style={[styles.col11, { backgroundColor: theme.app._1a1818 }]}>
                         <View style={styles.fabdiv}>
-                            <View style={[styles.nib, true && styles.nib_selected]}></View>
-                            <FAB style={[styles.fab, true && styles.fab_selected]} icon="home" onPress={() => { this.props.navigation.navigate('Home') }} />
+                            <View style={[styles.nib, { backgroundColor: theme.app.nib }, index == 0 && styles.nib_selected]}></View>
+                            <FAB style={[{ backgroundColor: theme.app.fab }, index == 0 && styles.fab_selected, index == 0 && { backgroundColor: theme.app.fab_selected } ]} icon="home" onPress={() => { this.props.navigation.navigate('Home') }} />
                         </View>
                     </View>
-                    <View style={styles.col12}>
+                    <View style={[styles.col12, { backgroundColor: theme.app._292726}]}>
                         {true &&
                             <List.Section>          
                                 <List.Item
@@ -100,7 +88,7 @@ class Menu extends React.Component<any, any>{
                         </ScrollView>
                     </View>
                 </View>
-                <View style={styles.row2}>
+                <View style={[styles.row2, { backgroundColor: theme.app._202020 }]}>
                     <IconButton
                         icon="settings"
                         onPress={() => { this.props.navigation.navigate('Settings') }}
@@ -110,4 +98,5 @@ class Menu extends React.Component<any, any>{
         );
     }
 }
-export default withNamespaces("app")(Menu);
+
+export default withTheme<any>(withNamespaces("app")(Menu));

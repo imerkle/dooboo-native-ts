@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ScrollView, View, Image, Dimensions } from 'react-native';
-import { Text } from 'react-native-paper';
+import { withTheme, Text } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import { changelog } from "app/constants";
 
@@ -12,7 +12,7 @@ class Home extends React.Component<any, any> {
         currentIndex: 0,
     }
     render = () => {
-        const { t } = this.props;
+        const { t, theme } = this.props;
         return (
             <View style={{ marginTop: 30 }}>
                 <Carousel
@@ -26,16 +26,16 @@ class Home extends React.Component<any, any> {
                     {changelog.map((o, i) => {
                         return (
                             <React.Fragment key={i}>
-                                <Text style={stylesg.h5} >{o.title.toUpperCase()}</Text>
+                                <Text style={[stylesg.h5, { color: theme.app.h5 } ]} >{o.title.toUpperCase()}</Text>
                                 {o.captions.map((ox, ix) => {
                                     return (
-                                        <Text key={ix} style={stylesg.caption}>{`\u2022 ${ox}`}</Text>
+                                        <Text key={ix} style={[stylesg.caption, {color: theme.app.caption} ]}>{`\u2022 ${ox}`}</Text>
                                     )
                                 })}
-                                <Text style={stylesg.h5} >{o.title.toUpperCase()}</Text>
+                                <Text style={[stylesg.h5, { color: theme.app.h5 }]} >{o.title.toUpperCase()}</Text>
                                 {o.captions.map((ox, ix) => {
                                     return (
-                                        <Text key={ix} style={stylesg.caption}>{`\u2022 ${ox}`}</Text>
+                                        <Text key={ix} style={[stylesg.caption, { color: theme.app.caption }]}>{`\u2022 ${ox}`}</Text>
                                     )
                                 })}                                
                             </React.Fragment>
@@ -77,4 +77,4 @@ const SliderImage = ({ item, index }) => {
         />
     );
 }
-export default withNamespaces("home")(Home);
+export default withTheme<any>(withNamespaces("home")(Home));

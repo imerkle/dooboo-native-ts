@@ -1,4 +1,4 @@
-import { List, IconButton, Text } from "react-native-paper";
+import { withTheme, List, IconButton, Text } from "react-native-paper";
 import { StyleSheet, View} from "react-native";
 import { withNavigation } from "react-navigation";
 import * as React from "react";
@@ -8,7 +8,7 @@ import { withNamespaces } from 'react-i18next';
 @withNavigation
 class Settings extends React.Component<any, any> {
     public render() {
-        const { t } = this.props;
+        const { t, theme } = this.props;
         const settingMenu = [
             {
                 name: t("menu:My Account"),
@@ -23,7 +23,7 @@ class Settings extends React.Component<any, any> {
         return (
             <View style={styles.root}>
                 <View style={styles.col1}>
-                    <View style={[stylesg.rowCenter, stylesg.header]}>
+                    <View style={[stylesg.rowCenter, stylesg.header, { backgroundColor: theme.app._1a1818 } ]}>
                         <IconButton
                             icon="arrow-back"
                             onPress={() => { this.props.navigation.dismiss() }}
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
 
     },
 });
-export default withNamespaces("settings")(Settings);
+export default withTheme<any>(withNamespaces("settings")(Settings));

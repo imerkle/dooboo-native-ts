@@ -13,6 +13,7 @@ const en = {
         "Settings": "Settings",
         "Preferences": "Preferences",
         "Change Language": "Change Language",
+        "Change Theme": "Change Theme",
     },
 
 };
