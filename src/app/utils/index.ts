@@ -2,7 +2,7 @@ import Storage from "react-native-storage";
 import { AsyncStorage } from 'react-native';
 
 export const setKey = async (key, data) => {
-    await (window as any).storage.save({
+    await (global as any).storage.save({
         key,
         data,
     });
@@ -10,11 +10,11 @@ export const setKey = async (key, data) => {
 export const getKey = async (key) => {
     let res;
     try {
-        res = await (window as any).storage.load({
+        res = await (global as any).storage.load({
             key,
         });
     } catch (e) {
-        throw e;
+        //throw e;
     }
     return res;
 }

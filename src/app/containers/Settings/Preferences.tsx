@@ -40,7 +40,6 @@ class Preferences extends React.Component<any, any> {
                     </RadioButton.Group>
 
                     <Text style={[stylesg.h5, { color: theme.app.h5 }]}>{t("Change Theme").toUpperCase()}</Text>
-                    <Text>{"Theme"}</Text>
                     <TouchableRipple
                         onPress={() =>
                             appStore.setTheme(+!appStore.theme)
@@ -51,7 +50,7 @@ class Preferences extends React.Component<any, any> {
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             paddingVertical: 8,}} pointerEvents="none">
-                            <Paragraph>{appStore.theme == 0 ? "Dark" : "Light"}</Paragraph>
+                            <Paragraph>{appStore.theme == 0 ? "Dark Theme" : "Light Theme"}</Paragraph>
                             <Switch value={!!appStore.theme} />
                         </View>
                     </TouchableRipple>                    

@@ -13,6 +13,7 @@ import AppWrapper from "app/containers/AppWrapper";
 
 import Settings from "app/containers/Settings";
 import Preferences from "app/containers/Settings/Preferences";
+import { initStorage, getKey } from "app/utils";
 
 const tc = {
   screenInterpolator: sceneProps => {
@@ -75,10 +76,18 @@ const rootStore = createStores();
 class AppFragment extends React.Component<any, any>{
   constructor(props) {
     super(props)
+    initStorage();
+    this.init();
+  }
+  init = async () => {
+    const t0 = await getKey("theme");
+    const l0 = await getKey("locale");
+    if(t0) rootStore.appStore.setTheme(t0);
+    if(l0) rootStore.appStore.setLocale(l0);
   }
   render() {
     const { appStore } = rootStore;
-    const theme = appStore.theme == 1 ? themeDark : themeLight;
+    const theme = appStore.theme == 0 ? themeDark : themeLight;
 
     const AppContainer = getAppContainer({theme});
 
