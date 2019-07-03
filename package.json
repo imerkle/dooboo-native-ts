@@ -39,7 +39,7 @@
     "mobx-state-tree": "^3.10.2",
     "react": "16.7.0",
     "react-i18next": "^9.0.8",
-    "react-native": "0.58.1",
+    "react-native": "0.60.0",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-paper": "^2.6.1",
     "react-native-snap-carousel": "^3.7.5",
